@@ -45,7 +45,7 @@ function makeHtmlBoard() {
   // makes the board body in HTML (the nonClickable playing area where the pieces are played)
   for (let y = 0; y < height; y++) {
     const row = document.createElement("tr");
-    for (var x = 0; x < width; x++) {
+    for (let x = 0; x < width; x++) {
       const cell = document.createElement("td");
       cell.setAttribute("id", `${y}-${x}`);
       row.append(cell);

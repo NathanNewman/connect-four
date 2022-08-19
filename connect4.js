@@ -28,13 +28,15 @@ function makeBoard() {
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
+  // variable that identifies the HTML table as the game board
   const htmlBoard = document.getElementById("board");
 
-  // make clickable column tops.
+  // make clickable column row on top of the game board.
   const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
+  // makes each cell for the column row.
   for (let x = 0; x < width; x++) {
     const headCell = document.createElement("td");
     headCell.setAttribute("id", x);
@@ -42,7 +44,8 @@ function makeHtmlBoard() {
   }
   htmlBoard.append(top);
 
-  // makes the board body in HTML (the nonClickable playing area where the pieces are played)
+  // makes a table in HTML that functions as the game board board
+  // each cell is given an id based on its x and y coordinate positioning.
   for (let y = 0; y < height; y++) {
     const row = document.createElement("tr");
     for (let x = 0; x < width; x++) {
@@ -55,7 +58,7 @@ function makeHtmlBoard() {
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
-
+// boolean that finds the first empty spot in the column.
 function findSpotForCol(x) {
   for (let y = height - 1; y >= 0; y--) {
     if (!board[y][x]) {
@@ -68,10 +71,9 @@ function findSpotForCol(x) {
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
-  const piece = document.createElement("div");
+  const piece = document.createElement("img");
   piece.classList.add("piece");
   piece.classList.add(`p${currPlayer}`);
-  piece.style.top = -50 * (y + 2);
 
   const spot = document.getElementById(`${y}-${x}`);
   spot.append(piece);
@@ -135,24 +137,28 @@ function checkForWin() {
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
+      // for a horizontal win, the y values will be the same for each piece.
       const horiz = [
         [y, x],
         [y, x + 1],
         [y, x + 2],
         [y, x + 3],
       ];
+      // for a vertical win, the x values will be the same for each piece.
       let vert = [
         [y, x],
         [y + 1, x],
         [y + 2, x],
         [y + 3, x],
       ];
+      // for a diagonal right win, the y and x values will be increment by 1 with each piece.
       let diagDR = [
         [y, x],
         [y + 1, x + 1],
         [y + 2, x + 2],
         [y + 3, x + 3],
       ];
+      // for a diagonal left win, as the y values increment for each piece, the x values will decrease.
       let diagDL = [
         [y, x],
         [y + 1, x - 1],
@@ -160,6 +166,7 @@ function checkForWin() {
         [y + 3, x - 3],
       ];
 
+      // returns true if a player meets any win condition.
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
       }
